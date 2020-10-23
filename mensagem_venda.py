@@ -8,10 +8,6 @@ class MensagemVenda():
   def __init__(self, terminal, message_id = 1, init_ticket = True):
     self.terminal = terminal
     self.message_id = message_id
-    self.mensagem = self.obter_mensagem_venda(init_ticket)
-
-  def to_xml(self):
-    print((xmltodict.unparse(self.mensagem, pretty=True)))
 
   def obter_mensagem_venda(self, init_ticket):
     return {
@@ -21,7 +17,7 @@ class MensagemVenda():
         '@terminal': self.terminal.terminal,
         '@datetime': datetime.datetime.now(),
         '@messageId': self.message_id,
-        '@sugest': 'true',
+        '@suggest': 'true',
         '@response': 'true',
         '@init-tck': 'true' if init_ticket else 'false',
         '@evaluate': 'true',
@@ -34,4 +30,4 @@ class MensagemVenda():
     mensagem_produto = MensagemProduto(produto, seq, qtde)
 
     mensagem['message']['item-add'] = mensagem_produto.obter_mensagem_produto()
-    print((xmltodict.unparse(mensagem, pretty=True)))
+    return xmltodict.unparse(mensagem, pretty=True)

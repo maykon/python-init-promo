@@ -2,29 +2,29 @@ from terminal import Terminal
 import socket
 from produto import Produto
 from mensagem_venda import MensagemVenda
+from consulta_promo import ConsultaPromo
 
 class Venda():
+  def __init__(self, terminal, produtos = []):
+    self.terminal = terminal
+    self.produtos = produtos
 
-    def __init__(self, terminal, produtos = []):
-      self.terminal = terminal
-      self.produtos = produtos
+  def adicionar_produto(self, produto):
+    mensagem_venda = MensagemVenda(self.terminal)
+    xml = mensagem_venda.obter_mensagem_produto(produto, 1, 20)
 
-    def adicionar_produto(self, produto):
-        if produto:
-            produto
-            self.produtos.append(produto)
+    return ConsultaPromo().consultar_promocao(xml)
 
-    def remover_produto(self, produto):
-        if produto:
-            self.produtos.remove(produto)
+  def remover_produto(self, produto):
+    if produto:
+      self.produtos.remove(produto)
 
-    def finalizar_venda(self):
-        mensagem_venda = MensagemVenda(self.terminal)
-        mensagem_venda.obter_mensagem_produto(self.produtos[0], 1, 20)
-        #mensagem_venda.to_xml()
-
+  def finalizar_venda(self):
+    pass    
 
 if __name__ == "__main__":
-    terminal = Terminal('psts', '9906', socket.gethostname())
-    venda = Venda(terminal, [Produto(1, 5.5)])
-    venda.finalizar_venda()
+  terminal = Terminal('psts', '9906', 'MGA10196')#socket.gethostname()
+  venda = Venda(terminal)
+  venda.adicionar_produto(Produto('Produto 01', 5.5))
+
+
