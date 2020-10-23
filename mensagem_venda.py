@@ -25,8 +25,8 @@ class MensagemVenda():
       }
     }
   
-  def obter_mensagem_produto(self, produto, seq, qtde):
-    mensagem = self.obter_mensagem_venda(False)
+  def obter_mensagem_produto(self, produto, seq, qtde, init_ticket = False):
+    mensagem = self.obter_mensagem_venda(init_ticket)
     mensagem_produto = MensagemProduto(produto, seq, qtde)
 
     mensagem['message']['item-add'] = mensagem_produto.obter_mensagem_produto()
