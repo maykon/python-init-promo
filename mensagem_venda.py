@@ -1,22 +1,26 @@
 import datetime
 import xmltodict
+from mensagem_produto import MensagemProduto
+
 
 class MensagemVenda():
   
-  def __init__(self, venda, message_id = 1, init_ticket = True):
-    self.mensagem = 
+  def __init__(self, terminal, message_id = 1, init_ticket = True):
+    self.terminal = terminal
+    self.message_id = message_id
+    self.mensagem = self.obter_mensagem_venda(init_ticket)
 
   def to_xml(self):
     print((xmltodict.unparse(self.mensagem, pretty=True)))
 
-  def obter_mensagem_venda(self, terminal, message_id, init_ticket):
+  def obter_mensagem_venda(self, init_ticket):
     return {
       'message': {
-        '@companyId': terminal.company_id,
-        '@store': terminal.store,
-        '@terminal': terminal.terminal,
+        '@companyId': self.terminal.company_id,
+        '@store': self.terminal.store,
+        '@terminal': self.terminal.terminal,
         '@datetime': datetime.datetime.now(),
-        '@messageId': message_id,
+        '@messageId': self.message_id,
         '@sugest': 'true',
         '@response': 'true',
         '@init-tck': 'true' if init_ticket else 'false',
@@ -26,11 +30,8 @@ class MensagemVenda():
     }
   
   def obter_mensagem_produto(self, produto, seq, qtde):
-    mensagem = obter_mensagem_venda(terminal, message_id, False)
-    mensagem['message']['item-add'] = {
-      '@seq': seq,
-      '@code': produto.codigo,
-      '@qty': qtde,
-      '@unitprice': produto.valor_unitario
-      '@xprice': qtde * produto.valor_unitario
-    }
+    mensagem = self.obter_mensagem_venda(False)
+    mensagem_produto = MensagemProduto(produto, seq, qtde)
+
+    mensagem['message']['item-add'] = mensagem_produto.obter_mensagem_produto()
+    print((xmltodict.unparse(mensagem, pretty=True)))

@@ -19,8 +19,9 @@ class Venda():
             self.produtos.remove(produto)
 
     def finalizar_venda(self):
-        mensagem_venda = MensagemVenda(self)
-        mensagem_venda.to_xml()
+        mensagem_venda = MensagemVenda(self.terminal)
+        mensagem_venda.obter_mensagem_produto(self.produtos[0], 1, 20)
+        #mensagem_venda.to_xml()
 
 
 if __name__ == "__main__":
